@@ -1,0 +1,54 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+
+    <PreferenceCategory android:title="Notifications">
+
+        <CheckBoxPreference
+            android:id="@+id/cnScreenOn"
+            android:defaultValue="false"
+            android:key="screen_on_notify"
+            android:title="Show Screen On notifications" />
+        <CheckBoxPreference
+            android:id="@+id/cnUserPresents"
+            android:defaultValue="false"
+            android:key="user_presents_notify"
+            android:title="Show User Present notifications" />
+        <CheckBoxPreference
+            android:id="@+id/cnFailedPassword"
+            android:defaultValue="false"
+            android:key="failed_password_notify"
+            android:title="Show Failed Password notifications" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Tracking">
+
+        <CheckBoxPreference
+            android:id="@+id/ctScreenOn"
+            android:defaultValue="false"
+            android:key="screen_on_track"
+            android:title="Track Screen On events" />
+        <CheckBoxPreference
+            android:id="@+id/ctUserPresents"
+            android:defaultValue="false"
+            android:key="user_presents_track"
+            android:title="Track User Presents events" />
+        <CheckBoxPreference
+            android:id="@+id/ctFailedPassword"
+            android:defaultValue="false"
+            android:key="failed_password_track"
+            android:title="Track Failed Password events" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Other">
+
+        <CheckBoxPreference
+            android:id="@+id/cTakePhoto"
+            android:defaultValue="false"
+            android:key="take_photo"
+            android:title="Take photo if Failed Password" />
+    </PreferenceCategory>
+</PreferenceScreen>
