@@ -1,7 +1,10 @@
 package don.p3tru4io.s.locktracker;
 
+import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -11,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import static don.p3tru4io.s.locktracker.ForegroundApp.CHANNEL_ID;
 
 public class ReceiverService extends Service {
+
     public ReceiverService() {
     }
 
@@ -20,6 +24,8 @@ public class ReceiverService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    private static UserPresentReceiver userPresentReceiver;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -27,6 +33,29 @@ public class ReceiverService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);*/
 
+        start();
+        return Service.START_STICKY;
+        //return Service.START_NOT_STICKY;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+
+        unregisterReceiver(userPresentReceiver);
+        restart();
+        super.onTaskRemoved(rootIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+
+        unregisterReceiver(userPresentReceiver);
+        restart();
+        super.onDestroy();
+    }
+
+    void start()
+    {
         Notification notification;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -48,14 +77,22 @@ public class ReceiverService extends Service {
                     .build();
         }
 
-        startForeground(1, notification);
+        startForeground((int)System.currentTimeMillis(), notification);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_USER_PRESENT);
-
-        registerReceiver(new UserPresentReceiver(getBaseContext()), filter);
-
-        return Service.START_STICKY;
+        userPresentReceiver = new UserPresentReceiver(getBaseContext());
+        registerReceiver(userPresentReceiver, filter);
     }
+
+    private void restart()
+    {
+        AlarmManager am =( AlarmManager)getApplicationContext().getSystemService(getApplicationContext().ALARM_SERVICE);
+        Intent i = new Intent(getApplicationContext(),ReceiverService.class);
+        PendingIntent pi = PendingIntent.getService(getApplicationContext(), 0, i, 0);
+        //am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 3000, pi);
+        am.set(AlarmManager.RTC_WAKEUP,1000,pi);
+    }
+
 }

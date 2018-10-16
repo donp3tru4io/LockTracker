@@ -2,6 +2,7 @@ package don.p3tru4io.s.locktracker;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +12,7 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UserPresentReceiver extends WakefulBroadcastReceiver {
+public class UserPresentReceiver extends BroadcastReceiver {
 
 
     private static final int USER_PRESENTS = 201;
@@ -29,10 +30,18 @@ public class UserPresentReceiver extends WakefulBroadcastReceiver {
     public static final String CT_USER_PRESENTS = "user_presents_track";
     public static final String C_SCREEN_ON = "screen_on";
     public static final String C_ATTEMPT = "atempts";
+    public static final String CP_USER_PRESENTS = "take_photo_user_presents";
+    public static final String CP_SCREEN_ON = "take_photo_screenon";
 
     private SharedPreferences mSettings;
 
     private Context context;
+
+    public UserPresentReceiver()
+    {
+
+    }
+
 
     public UserPresentReceiver(Context _context)
     {
@@ -62,6 +71,12 @@ public class UserPresentReceiver extends WakefulBroadcastReceiver {
                 postNotification(context, context.getResources().getString(R.string.screen_on), screenOnText,
                         SCREEN_ON, CHANNEL_ID_1, name1);
             }
+            if (mSettings.getBoolean(CP_SCREEN_ON,true))
+            {
+                SimpleDateFormat fileFormatter = new SimpleDateFormat("HH.mm.ss_dd.MM.yyyy");
+                APictureCapturingService pictureService = PictureCapturingServiceImpl.getInstance(context);
+                pictureService.startCapturing(fileFormatter.format(date));
+            }
         }
         else
         if(intent.getAction().equals(Intent.ACTION_USER_PRESENT))
@@ -71,6 +86,13 @@ public class UserPresentReceiver extends WakefulBroadcastReceiver {
                 postNotification(context, context.getResources().getString(R.string.user_presents), formatter.format(date),
                         USER_PRESENTS, CHANNEL_ID_2, name2);
             }
+            if (mSettings.getBoolean(CP_USER_PRESENTS,true))
+            {
+                SimpleDateFormat fileFormatter = new SimpleDateFormat("HH.mm.ss_dd.MM.yyyy");
+                APictureCapturingService pictureService = PictureCapturingServiceImpl.getInstance(context);
+                pictureService.startCapturing(fileFormatter.format(date));
+            }
+
             SharedPreferences.Editor editor = mSettings.edit();
             editor.putBoolean(C_SCREEN_ON, false);
             editor.putBoolean(C_ATTEMPT, false);

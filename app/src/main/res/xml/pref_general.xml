@@ -43,12 +43,30 @@
             android:key="failed_password_track"
             android:title="Track Failed Password events" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Photo">
+
+        <CheckBoxPreference
+            android:id="@+id/cTakePhotoFailed"
+            android:defaultValue="false"
+            android:key="take_photo_failed"
+            android:title="Take photo if Failed Password" />
+        <CheckBoxPreference
+            android:id="@+id/ctPhotoScreenOn"
+            android:defaultValue="false"
+            android:key="take_photo_screenon"
+            android:title="Take photo if Screen On" />
+        <CheckBoxPreference
+            android:id="@+id/ctPhotoUserPresents"
+            android:defaultValue="false"
+            android:key="take_photo_user_presents"
+            android:title="Take photo if User Presents" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="Other">
 
         <CheckBoxPreference
-            android:id="@+id/cTakePhoto"
+            android:id="@+id/chStartOnBoot"
             android:defaultValue="false"
-            android:key="take_photo"
-            android:title="Take photo if Failed Password" />
+            android:key="start_on_boot"
+            android:title="Start on boot" />
     </PreferenceCategory>
 </PreferenceScreen>

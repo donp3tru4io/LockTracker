@@ -27,7 +27,7 @@ public class LockAdmin extends DeviceAdminReceiver{
 
     public static final String CN_FAILED_PASSWORD = "failed_password_notify";
     public static final String CT_FAILED_PASSWORD = "failed_password_track";
-    public static final String C_TAKE_PHOTO = "take_photo";
+    public static final String CP_TAKE_PHOTO = "take_photo_failed";
     public static final String C_ATTEMPT = "atempts";
 
     private static SharedPreferences mSettings;
@@ -80,7 +80,7 @@ public class LockAdmin extends DeviceAdminReceiver{
             }
             mNotificationManager.notify(PASSWORD_FAILED, mBuilder.build());
         }
-        if (mSettings.getBoolean(C_TAKE_PHOTO,true)) {
+        if (mSettings.getBoolean(CP_TAKE_PHOTO,true)) {
             APictureCapturingService pictureService = PictureCapturingServiceImpl.getInstance(context);
             pictureService.startCapturing(fileFormatter.format(date));
         }

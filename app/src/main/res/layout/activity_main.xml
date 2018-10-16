@@ -38,6 +38,13 @@
             android:padding="16dp"
             android:text="Button" />
 
+        <Button
+            android:id="@+id/bBoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="Button" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

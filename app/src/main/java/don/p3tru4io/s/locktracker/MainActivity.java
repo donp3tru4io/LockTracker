@@ -33,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private static final String CAMERA = Manifest.permission.CAMERA;
+    private static final String BOOT_COMPLETED = Manifest.permission.RECEIVE_BOOT_COMPLETED;
 
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1002;
     private static final int REQUEST_CAMERA = 1003;
+    private static final int REQUEST_BOOT = 1004;
 
     private Switch sAdmin;
-    private Button bCamera, bStorage;
+    private Button bCamera, bStorage,bBoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         sAdmin = findViewById(R.id.sAdmin);
         bCamera = findViewById(R.id.bCamera);
         bStorage =findViewById(R.id.bStorage);
+        bBoot =findViewById(R.id.bBoot);
 
 
         if (isAdmin())
@@ -82,6 +85,18 @@ public class MainActivity extends AppCompatActivity {
         {
             bStorage.setText("Grant storage permission");
             bStorage.setEnabled(true);
+        }
+
+
+        if (isPermissionGranted(BOOT_COMPLETED))
+        {
+            bBoot.setText("Boot receiving permission granted");
+            bBoot.setEnabled(false);
+        }
+        else
+        {
+            bBoot.setText("Grant boot receiving permission");
+            bBoot.setEnabled(true);
         }
 
         sAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -114,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 requestPermission(WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE);
+            }
+        });
+
+        bBoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestPermission(BOOT_COMPLETED, REQUEST_BOOT);
             }
         });
 
@@ -207,20 +229,32 @@ public class MainActivity extends AppCompatActivity {
                 bStorage.setText("Grant storage permission");
                 bStorage.setEnabled(true);
             }
-        } else if (requestCode == REQUEST_CAMERA) {
+       } else if (requestCode == REQUEST_CAMERA) {
 
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this,"Camera permission granted",Toast.LENGTH_SHORT).show();
-                bCamera.setText("Camera permission granted");
-                bCamera.setEnabled(false);
-            } else {
-                Toast.makeText(this,"Camera denied",Toast.LENGTH_SHORT).show();
-                bCamera.setText("Grant camera permission");
-                bCamera.setEnabled(true);
-            }
-        } else{
+           if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+               Toast.makeText(this, "Camera permission granted", Toast.LENGTH_SHORT).show();
+               bCamera.setText("Camera permission granted");
+               bCamera.setEnabled(false);
+           } else {
+               Toast.makeText(this, "Camera denied", Toast.LENGTH_SHORT).show();
+               bCamera.setText("Grant camera permission");
+               bCamera.setEnabled(true);
+           }
+       } else if (requestCode == REQUEST_BOOT) {
+
+           if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+               Toast.makeText(this, "Boot permission granted", Toast.LENGTH_SHORT).show();
+               bBoot.setText("Boot receiving permission granted");
+               bBoot.setEnabled(false);
+           } else {
+               Toast.makeText(this, "Boot denied", Toast.LENGTH_SHORT).show();
+               bBoot.setText("Grant boot receiving permission");
+               bBoot.setEnabled(true);
+           }
+       }
+       else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
+       }
     }
 
 }
