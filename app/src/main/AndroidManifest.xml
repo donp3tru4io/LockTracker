@@ -65,7 +65,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".HistoryActivity">
+        </activity>
     </application>
 
 </manifest>

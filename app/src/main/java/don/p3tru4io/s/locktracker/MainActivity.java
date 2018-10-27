@@ -127,8 +127,15 @@ public class MainActivity extends AppCompatActivity {
         bHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                if (isDeviceSecure()) {
+                    KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+                    Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Please, authenticate",
+                            "Enter unlock code");
+                    startActivityForResult(i, REQUEST_DATABASE);
+                }
+                else {
+                    startActivity(new Intent(getApplicationContext(),HistoryActivity.class));
+                }
             }
         });
 
@@ -241,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
