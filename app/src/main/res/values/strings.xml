@@ -4,5 +4,6 @@
     <string name="user_presents">User presents</string>
     <string name="screen_on">Screen on</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_database">History</string>
     <string name="title_activity_about">About</string>
 </resources>

@@ -3,9 +3,11 @@ package don.p3tru4io.s.locktracker;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.admin.DeviceAdminReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
@@ -29,6 +31,9 @@ public class LockAdmin extends DeviceAdminReceiver{
     public static final String CT_FAILED_PASSWORD = "failed_password_track";
     public static final String CP_TAKE_PHOTO = "take_photo_failed";
     public static final String C_ATTEMPT = "atempts";
+
+    LockDBHelper DBHelper;
+    SQLiteDatabase db;
 
     private static SharedPreferences mSettings;
 
@@ -79,6 +84,16 @@ public class LockAdmin extends DeviceAdminReceiver{
                 mBuilder.setChannelId(CHANNEL_ID);
             }
             mNotificationManager.notify(PASSWORD_FAILED, mBuilder.build());
+        }
+        if (mSettings.getBoolean(CT_FAILED_PASSWORD,true))
+        {
+            DBHelper = new LockDBHelper(context);
+            db = DBHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(DBHelper.EVENT,context.getResources().getString(R.string.failed_password));
+            values.put(DBHelper.DATE,formatter.format(date));
+            db.insert(DBHelper.TABLE_NAME,null,values);
+            db.close();
         }
         if (mSettings.getBoolean(CP_TAKE_PHOTO,true)) {
             APictureCapturingService pictureService = PictureCapturingServiceImpl.getInstance(context);

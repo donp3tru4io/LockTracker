@@ -2,6 +2,7 @@ package don.p3tru4io.s.locktracker;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +40,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 1003;
     private static final int REQUEST_BOOT = 1004;
 
+    private static final int REQUEST_SET_ADMIN = 221;
+    private static final int REQUEST_RESET_ADMIN = 225;
+    private static final int REQUEST_DATABASE = 222;
+    private static final int REQUEST_SETTINGS = 223;
+
     private Switch sAdmin;
-    private Button bCamera, bStorage,bBoot;
+    private Button bCamera, bStorage,bBoot,bHistory;
+    private TextView tvWarning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +61,92 @@ public class MainActivity extends AppCompatActivity {
 
         sAdmin = findViewById(R.id.sAdmin);
         bCamera = findViewById(R.id.bCamera);
-        bStorage =findViewById(R.id.bStorage);
-        bBoot =findViewById(R.id.bBoot);
+        bStorage = findViewById(R.id.bStorage);
+        bBoot = findViewById(R.id.bBoot);
+        bHistory = findViewById(R.id.bHistory);
+        tvWarning = findViewById(R.id.tvWarning);
+
+        updatePermissionState();
 
 
+        sAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b)
+                {
+                    if (isDeviceSecure()) {
+                        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+                        Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Please, authenticate",
+                                "Enter unlock code");
+                        startActivityForResult(i, REQUEST_SET_ADMIN);
+                    }
+                    else {
+                        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminComponent);
+                        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Administrator description");
+                        startActivityForResult(intent, ADMIN_INTENT);
+                    }
+                }
+                else
+                {
+                    if (isDeviceSecure()) {
+                        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+                        Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Please, authenticate",
+                                "Enter unlock code");
+                        startActivityForResult(i, REQUEST_RESET_ADMIN);
+                    }else {
+                        mDevicePolicyManager.removeActiveAdmin(mAdminComponent);
+                        Toast.makeText(getApplicationContext(), "LockAdmin disabled", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+
+        bCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestPermission(CAMERA, REQUEST_CAMERA);
+            }
+        });
+
+        bStorage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestPermission(WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE);
+            }
+        });
+
+        bBoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestPermission(BOOT_COMPLETED, REQUEST_BOOT);
+            }
+        });
+
+        bHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
+
+        if (!isMyServiceRunning(ReceiverService.class)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(new Intent(this, ReceiverService.class));
+            } else {
+                startService(new Intent(this, ReceiverService.class));
+            }
+        }
+    }
+
+
+    private void updatePermissionState()
+    {
         if (isAdmin())
         {
-           sAdmin.setChecked(true);
+            sAdmin.setChecked(true);
         } else {
             sAdmin.setChecked(false);
         }
@@ -99,54 +185,20 @@ public class MainActivity extends AppCompatActivity {
             bBoot.setEnabled(true);
         }
 
-        sAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b)
-                {
-                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminComponent);
-                    intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Administrator description");
-                    startActivityForResult(intent, ADMIN_INTENT);
-                }
-                else
-                {
-                    mDevicePolicyManager.removeActiveAdmin(mAdminComponent);
-                    Toast.makeText(getApplicationContext(), "LockAdmin disabled", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        bCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requestPermission(CAMERA, REQUEST_CAMERA);
-            }
-        });
-
-        bStorage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requestPermission(WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE);
-            }
-        });
-
-        bBoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requestPermission(BOOT_COMPLETED, REQUEST_BOOT);
-            }
-        });
-
-
-        if (!isMyServiceRunning(ReceiverService.class)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(new Intent(this, ReceiverService.class));
-            } else {
-                startService(new Intent(this, ReceiverService.class));
-            }
+        if(hasAllPermissions())
+        {
+            tvWarning.setVisibility(TextView.GONE);
         }
+        else
+        {
+            tvWarning.setVisibility(TextView.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onEnterAnimationComplete()
+    {
+        updatePermissionState();
     }
 
 
@@ -163,7 +215,27 @@ public class MainActivity extends AppCompatActivity {
         switch (id)
         {
             case R.id.action_settings:
-                startActivity(new Intent(this,SettingsActivity.class));
+                if (isDeviceSecure()) {
+                    KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+                    Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Please, authenticate",
+                            "Enter unlock code");
+                    startActivityForResult(i, REQUEST_SETTINGS);
+                }
+                else
+                {
+                    startActivity(new Intent(this, SettingsActivity.class));
+                }
+                return true;
+            case R.id.action_database:
+                if (isDeviceSecure()) {
+                    KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+                    Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Please, authenticate",
+                            "Enter unlock code");
+                    startActivityForResult(i, REQUEST_DATABASE);
+                }
+                else {
+                    startActivity(new Intent(getApplicationContext(),HistoryActivity.class));
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -172,15 +244,58 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ADMIN_INTENT) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "LockAdmin enabled", Toast.LENGTH_SHORT).show();
-                sAdmin.setChecked(true);
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "LockAdmin error", Toast.LENGTH_SHORT).show();
-                sAdmin.setChecked(false);
-            }
+        switch (requestCode){
+            case ADMIN_INTENT :
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getApplicationContext(), "LockAdmin enabled", Toast.LENGTH_SHORT).show();
+                    sAdmin.setChecked(true);
+                    if(hasAllPermissions())
+                    {
+                        tvWarning.setVisibility(TextView.GONE);
+                    }
+                    else
+                    {
+                        tvWarning.setVisibility(TextView.VISIBLE);
+                    }
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "LockAdmin error", Toast.LENGTH_SHORT).show();
+                    sAdmin.setChecked(false);
+                    tvWarning.setVisibility(TextView.VISIBLE);
+                }
+                break;
+            case REQUEST_SETTINGS:
+                if (resultCode == RESULT_OK) {
+                    startActivity(new Intent(this, SettingsActivity.class));
+                } else{
+                    Toast.makeText(getApplicationContext(), "Not authenticated", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_SET_ADMIN:
+                if (resultCode == RESULT_OK) {
+                    Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+                    intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminComponent);
+                    intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Administrator description");
+                    startActivityForResult(intent, ADMIN_INTENT);
+                } else{
+                    Toast.makeText(getApplicationContext(), "Not authenticated", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_RESET_ADMIN:
+                if (resultCode == RESULT_OK) {
+                    mDevicePolicyManager.removeActiveAdmin(mAdminComponent);
+                    Toast.makeText(getApplicationContext(), "LockAdmin disabled", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(getApplicationContext(), "Not authenticated", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_DATABASE:
+                if (resultCode == RESULT_OK) {
+                    startActivity(new Intent(getApplicationContext(),HistoryActivity.class));
+                } else{
+                    Toast.makeText(getApplicationContext(), "Not authenticated", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
@@ -191,6 +306,23 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public boolean hasAllPermissions()
+    {
+        if (isAdmin() && isPermissionGranted(WRITE_EXTERNAL_STORAGE) && isPermissionGranted(CAMERA)
+                && isPermissionGranted(BOOT_COMPLETED))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    private boolean isDeviceSecure() {
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+
+        return keyguardManager.isKeyguardSecure();
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -224,10 +356,19 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this,"Write permission granted",Toast.LENGTH_SHORT).show();
                 bStorage.setText("Storage permission granted");
                 bStorage.setEnabled(false);
+                if(hasAllPermissions())
+                {
+                    tvWarning.setVisibility(TextView.GONE);
+                }
+                else
+                {
+                    tvWarning.setVisibility(TextView.VISIBLE);
+                }
             } else {
                 Toast.makeText(this,"Write denied",Toast.LENGTH_SHORT).show();
                 bStorage.setText("Grant storage permission");
                 bStorage.setEnabled(true);
+                tvWarning.setVisibility(TextView.VISIBLE);
             }
        } else if (requestCode == REQUEST_CAMERA) {
 
@@ -235,10 +376,19 @@ public class MainActivity extends AppCompatActivity {
                Toast.makeText(this, "Camera permission granted", Toast.LENGTH_SHORT).show();
                bCamera.setText("Camera permission granted");
                bCamera.setEnabled(false);
+               if(hasAllPermissions())
+               {
+                   tvWarning.setVisibility(TextView.GONE);
+               }
+               else
+               {
+                   tvWarning.setVisibility(TextView.VISIBLE);
+               }
            } else {
                Toast.makeText(this, "Camera denied", Toast.LENGTH_SHORT).show();
                bCamera.setText("Grant camera permission");
                bCamera.setEnabled(true);
+               tvWarning.setVisibility(TextView.VISIBLE);
            }
        } else if (requestCode == REQUEST_BOOT) {
 
@@ -246,15 +396,26 @@ public class MainActivity extends AppCompatActivity {
                Toast.makeText(this, "Boot permission granted", Toast.LENGTH_SHORT).show();
                bBoot.setText("Boot receiving permission granted");
                bBoot.setEnabled(false);
+               if(hasAllPermissions())
+               {
+                   tvWarning.setVisibility(TextView.GONE);
+               }
+               else
+               {
+                   tvWarning.setVisibility(TextView.VISIBLE);
+               }
            } else {
                Toast.makeText(this, "Boot denied", Toast.LENGTH_SHORT).show();
                bBoot.setText("Grant boot receiving permission");
                bBoot.setEnabled(true);
+               tvWarning.setVisibility(TextView.VISIBLE);
            }
        }
        else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
        }
     }
+
+
 
 }

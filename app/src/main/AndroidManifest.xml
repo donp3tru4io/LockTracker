@@ -23,11 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".SettingsActivity"
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            android:label="@string/app_name"/>
+            android:theme="@style/AppTheme" />
 
         <receiver
             android:name=".LockAdmin"
@@ -51,13 +51,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".BootDeviceReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -66,6 +65,7 @@
             android:enabled="true"
             android:exported="true" />
 
+        <activity android:name=".HistoryActivity"></activity>
     </application>
 
 </manifest>

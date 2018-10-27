@@ -21,7 +21,7 @@
             android:title="Show User Present notifications" />
         <CheckBoxPreference
             android:id="@+id/cnFailedPassword"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="failed_password_notify"
             android:title="Show Failed Password notifications" />
     </PreferenceCategory>
@@ -29,17 +29,17 @@
 
         <CheckBoxPreference
             android:id="@+id/ctScreenOn"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="screen_on_track"
             android:title="Track Screen On events" />
         <CheckBoxPreference
             android:id="@+id/ctUserPresents"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="user_presents_track"
             android:title="Track User Presents events" />
         <CheckBoxPreference
             android:id="@+id/ctFailedPassword"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="failed_password_track"
             android:title="Track Failed Password events" />
     </PreferenceCategory>
@@ -47,7 +47,7 @@
 
         <CheckBoxPreference
             android:id="@+id/cTakePhotoFailed"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="take_photo_failed"
             android:title="Take photo if Failed Password" />
         <CheckBoxPreference
@@ -65,7 +65,7 @@
 
         <CheckBoxPreference
             android:id="@+id/chStartOnBoot"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="start_on_boot"
             android:title="Start on boot" />
     </PreferenceCategory>

@@ -11,11 +11,24 @@
     tools:layout_editor_absoluteY="25dp">
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="visible"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
+
+        <TextView
+            android:id="@+id/tvWarning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollHorizontally="false"
+            android:text="Please, allow all permissions for correct work"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:visibility="visible" />
 
         <Switch
             android:id="@+id/sAdmin"
@@ -44,6 +57,13 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="Button" />
+
+        <Button
+            android:id="@+id/bHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="History" />
 
     </LinearLayout>
 
