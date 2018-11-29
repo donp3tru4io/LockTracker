@@ -8,9 +8,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_SETTINGS = 223;
 
     private Switch sAdmin;
-    private Button bCamera, bStorage,bBoot,bHistory;
+    private Button bCamera, bStorage,bBoot,bHistory,button;
     private TextView tvWarning;
 
     @Override
@@ -66,8 +71,35 @@ public class MainActivity extends AppCompatActivity {
         bHistory = findViewById(R.id.bHistory);
         tvWarning = findViewById(R.id.tvWarning);
 
+        button = findViewById(R.id.button);
         updatePermissionState();
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                /*Uri uri = new Uri.Builder()
+                        .scheme("image")
+                        .appendPath("emulated//0")
+                        .appendPath("LockTracker")
+                        .appendPath("09.04.25_19.11.2018_pic.jpg")
+                        .build();*/
+                File file= new File(Environment.getExternalStorageDirectory()+
+                    "/LockTracker/09.04.25_19.11.2018_pic.jpg");
+                if (!file.exists())
+                {
+                    Toast.makeText(getApplicationContext(),"No such file",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                /*Uri uri = Uri.fromFile(file);
+                Toast.makeText(getApplicationContext(),uri.toString(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(uri, "image/jpeg");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);*/
+            }
+        });
 
         sAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

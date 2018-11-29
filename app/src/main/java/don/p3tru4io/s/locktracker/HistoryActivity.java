@@ -10,6 +10,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,12 +22,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -93,6 +101,19 @@ public class HistoryActivity extends AppCompatActivity {
                         R.id.tDate});
 
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String eDate = data.get(i).get("date");
+                //18:43:23 29/11/2018
+                //18.04.31_19.11.2018
+                String fileName = eDate.replace(":",".").
+                        replace("/",".").
+                        replace(" ","_");
+                showPhoto(fileName);
+
+            }
+        });
     }
 
     @Override
@@ -164,8 +185,26 @@ public class HistoryActivity extends AppCompatActivity {
         return keyguardManager.isKeyguardSecure();
     }
 
-    private String checkPhoto(String date)
-    {
-        return "";
+    private void showPhoto(String fileName) {
+        File file = new File(Environment.getExternalStorageDirectory() +
+                "/LockTracker/"+fileName+"_pic.jpg");
+        if (!file.exists()) {
+            Toast.makeText(getApplicationContext(), "Photo in absent", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Uri uri = Uri.fromFile(file);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "image/jpeg");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 24) {
+            try {
+                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                m.invoke(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        startActivity(intent);
     }
 }
