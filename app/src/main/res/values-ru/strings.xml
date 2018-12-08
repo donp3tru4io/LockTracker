@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LockTracker</string>
+    <string name="failed_password">Попытка разблокировки</string>
+    <string name="user_presents">Разблокировано</string>
+    <string name="screen_on">Экран включен</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_activity_database">История</string>
+    <string name="title_activity_about">О программе</string>
+    <string name="title_history_drop">Очистить историю</string>
+
+    <string name="permission_warning">Пожалуйста, предоставте все права для коректной работи приложения</string>
+
+    <string name="Admin_permission">Права администратора</string>
+
+    <string name="event">Событие</string>
+    <string name="date">Дата</string>
+
+    <string name="foreground_app">LockTracker активен</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="are_you_sure">Вы уверены?</string>
+    <string name="yes">Да</string>
+    <string name="auth">Пожалуйста, подтвердите личность</string>
+    <string name="enter_code">Разблокируйте</string>
+    <string name="cancel">Отмена</string>
+    <string name="not_authenticated">Лисность не подтверждена</string>
+    <string name="no_photo">Фото отсутствует</string>
+    <string name="admin_description">"Описание прав администратора"</string>
+    <string name="admin_disabled">"Права администратора отключены"</string>
+    <string name="admin_enabled">"Права администратора включены"</string>
+    <string name="admin_error">"Ошибка получения прав администратора"</string>
+
+
+    <string name="camera_granted">"Права камеры предоставлены"</string>
+    <string name="camera_denied">"Отказ при получении прав камеры"</string>
+    <string name="camera_request">"Предоставить права на запись"</string>
+    <string name="storage_granted">"Права на запись предоставлены"</string>
+    <string name="storage_denied">"Отказ при получении прав записи"</string>
+    <string name="storage_request">"Предоставить права на запись"</string>
+    <string name="boot_granted">"Права на автозапуск предоставлены"</string>
+    <string name="boot_denied">"Отказ при получении прав на автозапуск"</string>
+    <string name="boot_request">"Предоставить права на автозагрузку"</string>
+
+
+    <string name="Notify">Уведомления</string>
+    <string name="Logging">Журналирование</string>
+    <string name="Photos">Фото</string>
+    <string name="Other">Другое</string>
+
+    <string name="ScreenOnNotify">Уведомлять о включении экрана</string>
+    <string name="UserPresentsNotify">Уведомлять о разблокировке</string>
+    <string name="AttemptNotify">Уведомлять о попытке разблокировки</string>
+    <string name="ScreenOnTracking">Журналировать включение экрана</string>
+    <string name="UserPresentsTracking">Журналировать разблокировку</string>
+    <string name="AttemptTracking">Журналировать попытку раблокировки</string>
+    <string name="ScreenOnPhoto">Снимать фото при включении экрана</string>
+    <string name="UserPresentsPhoto">Снимать фото при разблокировке</string>
+    <string name="AttemptPhoto">Снимать фото при попытке разблокировки</string>
+    <string name="Startup">Запускать после загрузки системы</string>
+
+    <string name="name">Петр Дончук-Донцов</string>
+    <string name="group">1БС-16Б</string>
+    <string name="year">2018</string>
+</resources>

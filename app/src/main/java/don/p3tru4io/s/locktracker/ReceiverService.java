@@ -60,8 +60,8 @@ public class ReceiverService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("Service")
-                    .setContentText("Broadcast Receiver")
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.foreground_app))
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     //.setContentIntent(pendingIntent)
                     .build();
@@ -70,8 +70,8 @@ public class ReceiverService extends Service {
         else
         {
             notification = new NotificationCompat.Builder(this)
-                    .setContentTitle("Service")
-                    .setContentText("Broadcast Receiver")
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.foreground_app))
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                     //.setContentIntent(pendingIntent)
                     .build();

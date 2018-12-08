@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollHorizontally="false"
-            android:text="Please, allow all permissions for correct work"
+            android:text="@string/permission_warning"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Administrator permission" />
+            android:text="@string/Admin_permission" />
 
         <Button
             android:id="@+id/bCamera"
@@ -63,13 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="History" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="@string/title_activity_database" />
 
     </LinearLayout>
 

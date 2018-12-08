@@ -129,14 +129,14 @@ public class HistoryActivity extends AppCompatActivity {
         {
             case R.id.hDrop:
                 ad = new AlertDialog.Builder(this);
-                ad.setTitle("Clear history?");  // заголовок
-                ad.setMessage("Are you sure?"); // сообщение
-                ad.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                ad.setTitle(getString(R.string.clear_history));  // заголовок
+                ad.setMessage(getString(R.string.are_you_sure)); // сообщение
+                ad.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         if (isDeviceSecure()) {
                             KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-                            Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Please, authenticate",
-                                    "Enter unlock code");
+                            Intent i = keyguardManager.createConfirmDeviceCredentialIntent(getString(R.string.auth),
+                                    getString(R.string.enter_code));
                             startActivityForResult(i, REQUEST_DROP);
                         }
                         else
@@ -149,7 +149,7 @@ public class HistoryActivity extends AppCompatActivity {
                         }
                     }
                 });
-                ad.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                ad.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
 
                     }
@@ -173,7 +173,7 @@ public class HistoryActivity extends AppCompatActivity {
                     db.close();
                     loadList();
                 } else{
-                    Toast.makeText(getApplicationContext(), "Not authenticated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.not_authenticated), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -189,7 +189,7 @@ public class HistoryActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory() +
                 "/LockTracker/"+fileName+"_pic.jpg");
         if (!file.exists()) {
-            Toast.makeText(getApplicationContext(), "Photo in absent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.no_photo), Toast.LENGTH_SHORT).show();
             return;
         }
         Uri uri = Uri.fromFile(file);

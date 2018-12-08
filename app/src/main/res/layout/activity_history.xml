@@ -24,7 +24,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Event"
+                android:text="@string/event"
                 android:textColor="@android:color/background_dark" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Date"
+                android:text="@string/date"
                 android:textColor="@android:color/background_dark" />
         </LinearLayout>
 

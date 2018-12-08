@@ -1,13 +1,64 @@
 <resources>
     <string name="app_name">LockTracker</string>
     <string name="failed_password">Attempt to unlock</string>
-    <string name="user_presents">User presents</string>
+    <string name="user_presents">Unlocking</string>
     <string name="screen_on">Screen on</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_database">History</string>
     <string name="title_activity_about">About</string>
     <string name="title_history_drop">Clear history</string>
-    <string name="title_history_screenOn">Show ScreenOn</string>
-    <string name="title_history_userPresents">Show User Presents</string>
-    <string name="title_history_failedPassword">Show Failed Password</string>
+
+    <string name="permission_warning">Please, allow all permissions for correct app work</string>
+
+    <string name="Admin_permission">Administrator permission</string>
+
+    <string name="event">Event</string>
+    <string name="date">Date</string>
+
+    <string name="foreground_app">LockTracker is active</string>
+    <string name="clear_history">Clear history</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="auth">Please, authenticate</string>
+    <string name="enter_code">Enter unlock code</string>
+    <string name="cancel">Cancel</string>
+    <string name="not_authenticated">Not authenticated</string>
+    <string name="no_photo">Photo in absent</string>
+    <string name="admin_description">"Administrator permissions description"</string>
+    <string name="admin_disabled">"Administrator permissions disabled"</string>
+    <string name="admin_enabled">"Administrator permissions enabled"</string>
+    <string name="admin_error">"Getting Administrator permissions error"</string>
+
+
+    <string name="camera_granted">"Camera permission granted"</string>
+    <string name="camera_denied">"Camera permission denied"</string>
+    <string name="camera_request">"Grant camera permission"</string>
+    <string name="storage_granted">"Storage permission granted"</string>
+    <string name="storage_denied">"Storage permission denied"</string>
+    <string name="storage_request">"Grant storage permission"</string>
+    <string name="boot_granted">"Boot receiving permission granted"</string>
+    <string name="boot_denied">"Boot receiving permission denied"</string>
+    <string name="boot_request">"Grant boot receiving permission"</string>
+
+    <string name="name">Petro Donchuk-Dontsov</string>
+    <string name="group">1SS-16b</string>
+    <string name="year">2018</string>
+
+    <string name="Notify">Notifications</string>
+    <string name="Logging">Logging</string>
+    <string name="Photos">Photos</string>
+    <string name="Other">Other</string>
+
+
+    <string name="ScreenOnNotify">Notify about Screen On</string>
+    <string name="UserPresentsNotify">Notify about Unlocking</string>
+    <string name="AttemptNotify">Notify about Attempt to Unlock</string>
+    <string name="ScreenOnTracking">Log Screen On</string>
+    <string name="UserPresentsTracking">Log Unlocking</string>
+    <string name="AttemptTracking">Log Attempt to Unlock</string>
+    <string name="ScreenOnPhoto">Photo if Screen On</string>
+    <string name="UserPresentsPhoto">Photo if Unlocking</string>
+    <string name="AttemptPhoto">Photo if Attempt to Unlock</string>
+    <string name="Startup">Run after boot</string>
+
 </resources>

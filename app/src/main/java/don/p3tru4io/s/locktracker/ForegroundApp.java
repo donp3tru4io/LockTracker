@@ -15,8 +15,7 @@ public class ForegroundApp extends Application {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "BroadCast Receiver Register",
+                    CHANNEL_ID,getApplicationContext().getString(R.string.foreground_app),
                     NotificationManager.IMPORTANCE_LOW
             );
 
