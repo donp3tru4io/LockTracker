@@ -11,36 +11,47 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:padding="20dp"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="@string/app_name"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="@string/name"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="@string/group"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="@string/year"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textColor="@android:color/background_dark" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
